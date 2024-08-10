@@ -5,3 +5,8 @@ block head
 
 block body
   h2 Welcome to Watch This!
+
+  if user
+    p Welcome, #{user.username}!
+  else
+    p Welcome, guest!
