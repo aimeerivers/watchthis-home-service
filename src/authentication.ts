@@ -18,7 +18,7 @@ type SessionData = {
 
 dotenv.config();
 
-const userServiceUrl = process.env.USER_SERVICE_URL;
+const userServiceUrl = process.env.USER_SERVICE_URL ?? "http://localhost:8583";
 
 export const findUserFromSession = async (req: RequestWithUser, res: Response, next: NextFunction) => {
   const sessionCookie = req.cookies["connect.sid"];
