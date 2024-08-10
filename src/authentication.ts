@@ -14,7 +14,7 @@ type SessionData = {
     _id: string;
     username: string;
   };
-}
+};
 
 dotenv.config();
 
@@ -29,14 +29,14 @@ export const findUserFromSession = async (req: RequestWithUser, res: Response, n
 
   try {
     const response = await fetch(userServiceUrl + "/api/v1/session", {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Cookie': `connect.sid=${sessionCookie}`,
+        Cookie: `connect.sid=${sessionCookie}`,
       },
     });
 
     if (response.ok) {
-      const data = await response.json() as SessionData;
+      const data = (await response.json()) as SessionData;
       req.user = data.user;
     }
     return next();
