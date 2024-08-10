@@ -1,10 +1,16 @@
-import axios from "axios";
 import dotenv from "dotenv";
 import type express from "express";
 import { NextFunction, Response } from "express";
 
 export interface RequestWithUser extends express.Request {
   user?: {
+    _id: string;
+    username: string;
+  };
+}
+
+type SessionData = {
+  user: {
     _id: string;
     username: string;
   };
@@ -22,14 +28,16 @@ export const findUserFromSession = async (req: RequestWithUser, res: Response, n
   }
 
   try {
-    const response = await axios.get(userServiceUrl + "/api/v1/session", {
+    const response = await fetch(userServiceUrl + "/api/v1/session", {
+      method: 'GET',
       headers: {
-        Cookie: `connect.sid=${sessionCookie}`,
+        'Cookie': `connect.sid=${sessionCookie}`,
       },
     });
 
-    if (response.status === 200) {
-      req.user = response.data.user;
+    if (response.ok) {
+      const data = await response.json() as SessionData;
+      req.user = data.user;
     }
     return next();
   } catch (error) {
