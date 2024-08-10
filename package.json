@@ -30,12 +30,15 @@
   },
   "dependencies": {
     "app-root-path": "3.1.0",
+    "axios": "1.7.3",
+    "cookie-parser": "1.4.6",
     "dotenv": "16.4.5",
     "express": "4.19.2",
     "express-session": "1.18.0",
     "pug": "3.0.3"
   },
   "devDependencies": {
+    "@types/cookie-parser": "1.4.7",
     "@types/express": "4.17.21",
     "@types/express-session": "1.18.0",
     "@types/supertest": "6.0.2",
