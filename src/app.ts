@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import express from "express";
 import path from "path";
 
-import { findUserFromSession, RequestWithUser } from "./authentication";
+import { findUserFromSession, RequestWithUser } from "./auth";
 
 dotenv.config();
 
