@@ -7,6 +7,19 @@ block body
   h2 Welcome to Watch This!
 
   if user
-    p Welcome, #{user.username}!
+    p You are logged in as #{user.username}.
+
+    form(action=userServiceUrl + "/logout" method="POST")
+      input(type="hidden", name="callbackUrl", value=callbackUrl)
+      button.w-32(type="submit") Log out
+
   else
     p Welcome, guest!
+
+    form(action=userServiceUrl + "/login")
+      input(type="hidden", name="callbackUrl", value=callbackUrl)
+      button.w-32.primary(type="submit") Log in
+
+    form(action=userServiceUrl + "/signup")
+      input(type="hidden", name="callbackUrl", value=callbackUrl)
+      button.w-32(type="submit") Sign up
