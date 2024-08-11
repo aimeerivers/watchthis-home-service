@@ -8,6 +8,9 @@ import { findUserFromSession, RequestWithUser } from "./authentication";
 
 dotenv.config();
 
+const baseUrl = process.env.BASE_URL ?? "http://localhost:7283";
+const userServiceUrl = process.env.USER_SERVICE_URL ?? "http://localhost:8583";
+
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -18,7 +21,7 @@ app.set("views", path.join(appRootPath, "views"));
 app.use(express.static(path.join(appRootPath, "public")));
 
 app.get("/", findUserFromSession, (req: RequestWithUser, res) => {
-  res.render("home-page", { user: req.user });
+  res.render("home-page", { user: req.user, userServiceUrl, callbackUrl: new URL(req.url, baseUrl).toString() });
 });
 
 export { app };
