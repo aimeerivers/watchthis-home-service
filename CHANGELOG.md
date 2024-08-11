@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/aimeerivers/watchthis-home-service/compare/v1.1.0...v1.2.0) (2024-08-11)
+
+
+### Features
+
+* **auth:** enable logging in and out, directing to user-service ([#4](https://github.com/aimeerivers/watchthis-home-service/issues/4)) ([090fbfa](https://github.com/aimeerivers/watchthis-home-service/commit/090fbfa6b3f3119c0823c5c21ae1415592b9a5cd))
+
 ## [1.1.0](https://github.com/aimeerivers/watchthis-home-service/compare/v1.0.0...v1.1.0) (2024-08-10)
 
 
