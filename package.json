@@ -46,7 +46,7 @@
     "eslint-config-plus-prettier": "1.5.10",
     "nodemon": "3.1.4",
     "npm-package-json-lint": "8.0.0",
-    "postcss": "8.4.41",
+    "postcss": "8.4.44",
     "postcss-cli": "11.0.0",
     "postcss-minify": "1.1.0",
     "supertest": "7.0.0",
