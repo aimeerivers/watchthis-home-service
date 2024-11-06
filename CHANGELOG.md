@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.11](https://github.com/aimeerivers/watchthis-home-service/compare/v1.2.10...v1.2.11) (2024-11-06)
+
+
+### Dependencies
+
+* update dependencies ([#26](https://github.com/aimeerivers/watchthis-home-service/issues/26)) ([f7f8cb8](https://github.com/aimeerivers/watchthis-home-service/commit/f7f8cb8fa3bb69a2d7d46d07d956c5ef18c9a2d0))
+
 ## [1.2.10](https://github.com/aimeerivers/watchthis-home-service/compare/v1.2.9...v1.2.10) (2024-10-30)
 
 
