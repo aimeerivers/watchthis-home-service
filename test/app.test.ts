@@ -6,7 +6,7 @@ import request from "supertest";
 
 import { app } from "../src/app.js";
 
-const port = 17283;
+const port = 17279;
 let server: Server;
 describe("App", () => {
   before(() => {

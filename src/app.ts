@@ -8,7 +8,7 @@ import { findUserFromSession, RequestWithUser } from "./auth.js";
 
 dotenv.config();
 
-const baseUrl = process.env.BASE_URL ?? "http://localhost:7283";
+const baseUrl = process.env.BASE_URL ?? "http://localhost:7279";
 const userServiceUrl = process.env.USER_SERVICE_URL ?? "http://localhost:8583";
 
 const app = express();
