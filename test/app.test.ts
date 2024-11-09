@@ -6,7 +6,7 @@ import request from "supertest";
 
 import { app } from "../src/app.js";
 
-const port = 17283;
+const port = 17279;
 let server: Server;
 describe("App", () => {
   before(() => {
@@ -17,6 +17,13 @@ describe("App", () => {
     it("should show the home page", async () => {
       const res = await request(app).get("/");
       assert.ok(res.text.includes("Welcome to Watch This!"));
+    });
+  });
+
+  describe("Ping", () => {
+    it("should respond to a ping", async () => {
+      const res = await request(app).get("/ping");
+      assert.equal(res.statusCode, 200);
     });
   });
 

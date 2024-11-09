@@ -6,7 +6,7 @@ Home service for WatchThis
 
 Add a `.env` file and add some environment variables:
 
-    BASE_URL=http://localhost:7283
+    BASE_URL=http://localhost:7279
     USER_SERVICE_URL=http://localhost:8583
 
 Install npm dependencies
@@ -25,7 +25,7 @@ Install npm dependencies
 
     npm run start
 
-Visit http://localhost:7283 in your browser
+Visit http://localhost:7279 in your browser
 
 ## Run in development mode
 
