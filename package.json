@@ -11,6 +11,7 @@
     "views"
   ],
   "main": "dist/src/server.js",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
