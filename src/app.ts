@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import express from "express";
 import path from "path";
 
+import packageJson from "../package.json" with { type: "json" };
 import { findUserFromSession, RequestWithUser } from "./auth.js";
 
 dotenv.config();
@@ -22,6 +23,10 @@ app.use(express.static(path.join(appRootPath.path, "public")));
 
 app.get("/", findUserFromSession, (req: RequestWithUser, res) => {
   res.render("home-page", { user: req.user, userServiceUrl, callbackUrl: new URL(req.url, baseUrl).toString() });
+});
+
+app.get("/ping", (_req, res) => {
+  res.send(`${packageJson.name} ${packageJson.version}`);
 });
 
 export { app };

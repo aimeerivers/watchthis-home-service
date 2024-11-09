@@ -20,6 +20,13 @@ describe("App", () => {
     });
   });
 
+  describe("Ping", () => {
+    it("should respond to a ping", async () => {
+      const res = await request(app).get("/ping");
+      assert.equal(res.statusCode, 200);
+    });
+  });
+
   after(async () => {
     server.close();
   });
