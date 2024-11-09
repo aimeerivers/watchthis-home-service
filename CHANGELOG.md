@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/aimeerivers/watchthis-home-service/compare/v2.0.1...v2.1.0) (2024-11-09)
+
+
+### Features
+
+* Add a ping route ([#38](https://github.com/aimeerivers/watchthis-home-service/issues/38)) ([a2af01f](https://github.com/aimeerivers/watchthis-home-service/commit/a2af01f2d4664257db5b5eb2efce5aba8204d922))
+
 ## [2.0.1](https://github.com/aimeerivers/watchthis-home-service/compare/v2.0.0...v2.0.1) (2024-11-09)
 
 
