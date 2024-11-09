@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.0.0](https://github.com/aimeerivers/watchthis-home-service/compare/v1.2.11...v2.0.0) (2024-11-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* CommonJS `require` importing is no longer supported in this project.
+
+### Features
+
+* Convert to ES module ([#28](https://github.com/aimeerivers/watchthis-home-service/issues/28)) ([2372f90](https://github.com/aimeerivers/watchthis-home-service/commit/2372f90d64b1a315dfde50faba5899d008cd3224))
+
+
+### Bug Fixes
+
+* Update postcss to work with ES module ([#30](https://github.com/aimeerivers/watchthis-home-service/issues/30)) ([ad0a132](https://github.com/aimeerivers/watchthis-home-service/commit/ad0a132b0319c2f0f8e027adfa0aee03bdee7803))
+
+
+### Dependencies
+
+* Use package lint from eslint-config-plus-prettier ([#32](https://github.com/aimeerivers/watchthis-home-service/issues/32)) ([e5e3703](https://github.com/aimeerivers/watchthis-home-service/commit/e5e37036b94c8daf665aa6bec7d859685b4214ab))
+
 ## [1.2.11](https://github.com/aimeerivers/watchthis-home-service/compare/v1.2.10...v1.2.11) (2024-11-06)
 
 
