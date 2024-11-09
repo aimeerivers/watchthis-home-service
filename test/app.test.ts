@@ -4,7 +4,7 @@ import { after, before, describe, it } from "node:test";
 
 import request from "supertest";
 
-import { app } from "../src/app";
+import { app } from "../src/app.js";
 
 const port = 17283;
 let server: Server;
