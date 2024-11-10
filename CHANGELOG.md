@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.2](https://github.com/aimeerivers/watchthis-home-service/compare/v2.1.1...v2.1.2) (2024-11-10)
+
+
+### Bug Fixes
+
+* Convert tailwind config to ES module ([#42](https://github.com/aimeerivers/watchthis-home-service/issues/42)) ([550e79b](https://github.com/aimeerivers/watchthis-home-service/commit/550e79bbecfda9dd482867a7e7b25cfcce836621))
+
 ## [2.1.1](https://github.com/aimeerivers/watchthis-home-service/compare/v2.1.0...v2.1.1) (2024-11-10)
 
 
