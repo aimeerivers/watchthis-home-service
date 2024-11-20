@@ -45,12 +45,12 @@
     "concurrently": "9.1.0",
     "eslint-config-plus-prettier": "4.0.0",
     "nodemon": "3.1.7",
-    "postcss": "8.4.47",
+    "postcss": "8.4.49",
     "postcss-cli": "11.0.0",
     "postcss-minify": "1.1.0",
     "supertest": "7.0.0",
     "supertest-session": "5.0.1",
-    "tailwindcss": "3.4.14",
+    "tailwindcss": "3.4.15",
     "typescript": "5.6.3"
   },
   "prettier": "eslint-config-plus-prettier/prettier"
