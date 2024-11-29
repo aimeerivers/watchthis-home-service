@@ -40,7 +40,7 @@ export const findUserFromSession = async (req: RequestWithUser, res: Response, n
       req.user = data.user;
     }
     return next();
-  } catch (error) {
+  } catch {
     return next();
   }
 };
