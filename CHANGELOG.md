@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.3](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.2...v2.2.3) (2025-09-07)
+
+
+### Documentation
+
+* Update architecture document with latest progress ([#87](https://github.com/aimeerivers/watchthis-home-service/issues/87)) ([feadb94](https://github.com/aimeerivers/watchthis-home-service/commit/feadb940234122cfe642e75aefe90167ee6251ac))
+
 ## [2.2.2](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.1...v2.2.2) (2025-09-07)
 
 
