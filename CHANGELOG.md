@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.2](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.1...v2.2.2) (2025-09-07)
+
+
+### Documentation
+
+* Add architecture plan ([#78](https://github.com/aimeerivers/watchthis-home-service/issues/78)) ([be2355a](https://github.com/aimeerivers/watchthis-home-service/commit/be2355aa5a1d85d0ee0248f0f44567c43022c0fc))
+
 ## [2.2.1](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.0...v2.2.1) (2025-09-07)
 
 
