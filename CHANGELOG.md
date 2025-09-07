@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/aimeerivers/watchthis-home-service/compare/v2.1.14...v2.2.0) (2025-09-07)
+
+
+### Features
+
+* Enhance security and add health check endpoint ([#74](https://github.com/aimeerivers/watchthis-home-service/issues/74)) ([44b314f](https://github.com/aimeerivers/watchthis-home-service/commit/44b314fb72a1c44a3ddb17b03c4372a7586be315))
+
 ## [2.1.14](https://github.com/aimeerivers/watchthis-home-service/compare/v2.1.13...v2.1.14) (2025-08-25)
 
 
