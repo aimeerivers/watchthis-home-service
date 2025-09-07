@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.2.2](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.1...v2.2.2) (2025-09-07)
+
+
+### Chores
+
+* Update dependencies ([#86](https://github.com/aimeerivers/watchthis-home-service/issues/86)) ([ca19979](https://github.com/aimeerivers/watchthis-home-service/commit/ca19979a8ab1ea77936afc7e5190cb32d3925828))
+* Update express to 5.1.0 ([#84](https://github.com/aimeerivers/watchthis-home-service/issues/84)) ([6e1a281](https://github.com/aimeerivers/watchthis-home-service/commit/6e1a28106f8a3c514b5ba7f6b4da2998bfb5b7a0))
+* Update tailwindcss to 4.x ([#82](https://github.com/aimeerivers/watchthis-home-service/issues/82)) ([84bb841](https://github.com/aimeerivers/watchthis-home-service/commit/84bb8411f104783d91540309cf64e9443604be0d))
+
+
+### Documentation
+
+* Add architecture plan ([#78](https://github.com/aimeerivers/watchthis-home-service/issues/78)) ([be2355a](https://github.com/aimeerivers/watchthis-home-service/commit/be2355aa5a1d85d0ee0248f0f44567c43022c0fc))
+* Update architecture with relevant port numbers ([#80](https://github.com/aimeerivers/watchthis-home-service/issues/80)) ([fcf2468](https://github.com/aimeerivers/watchthis-home-service/commit/fcf24682af44008ad301233140976c8e4c04596e))
+
 ## [2.2.1](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.0...v2.2.1) (2025-09-07)
 
 
