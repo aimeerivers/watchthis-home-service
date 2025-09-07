@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.0...v2.2.1) (2025-09-07)
+
+
+### Chores
+
+* Update eslint-config-plus-prettier to version 4.2.0 and adjust tsconfig settings ([#76](https://github.com/aimeerivers/watchthis-home-service/issues/76)) ([b92a2a8](https://github.com/aimeerivers/watchthis-home-service/commit/b92a2a80d1814d1f4281dc6db9f633e81b2fb639))
+
 ## [2.2.0](https://github.com/aimeerivers/watchthis-home-service/compare/v2.1.14...v2.2.0) (2025-09-07)
 
 
