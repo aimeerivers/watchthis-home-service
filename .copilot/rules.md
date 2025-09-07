@@ -197,19 +197,31 @@ This is a Node.js/Express frontend service built with TypeScript that serves as 
 - Validate package.json structure with `npm run package:lint`
 - Always ensure code passes: `npm run build`, `npm run test`, `npm run lint`, `npm run format`
 
+### Development Workflow
+
+- Always run the full quality check before committing changes:
+  ```bash
+  npm run build && npm run test
+  npm run lint && npm run format
+  ```
+- Ensure all tests pass before making changes
+- Build successfully before deploying
+- Maintain consistent code formatting across the project
+
+### Documentation Maintenance
+
+- Update Copilot documentation periodically when new patterns or information are learned
+- Keep rules.md, workspace.md, and improvements.md synchronized with actual codebase
+- Document new conventions and patterns as they are established
+- Review and update documentation during significant refactoring efforts
+- Maintain alignment with watchthis-user-service patterns and practices
+
 ### Type Safety
 
 - Use proper TypeScript interfaces for user objects
 - Type all function parameters and returns
 - Use proper typing for service responses
 - Avoid `any` types where possible
-
-### Documentation Maintenance
-
-- Update Copilot documentation when patterns change
-- Keep service integration patterns documented
-- Document new conventions as they are established
-- Review documentation during refactoring
 
 ## Deployment Considerations
 
