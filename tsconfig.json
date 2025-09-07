@@ -2,7 +2,6 @@
   "extends": "eslint-config-plus-prettier/tsconfig",
   "include": ["src", "test"],
   "compilerOptions": {
-    "outDir": "dist",
-    "allowSyntheticDefaultImports": true
+    "outDir": "dist"
   }
 }
