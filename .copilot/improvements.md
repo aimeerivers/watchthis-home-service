@@ -14,6 +14,7 @@ The `watchthis-home-service` is a minimal frontend service that provides a landi
 The service lacks basic security headers that should be standard for any web application.
 
 **Solution**:
+
 ```typescript
 // Add to src/app.ts
 import helmet from "helmet";
@@ -34,6 +35,7 @@ app.use(
 ```
 
 **Dependencies to add**:
+
 ```bash
 npm install helmet
 npm install --save-dev @types/helmet
@@ -47,6 +49,7 @@ npm install --save-dev @types/helmet
 The current `findUserFromSession` middleware silently catches all errors, which makes debugging difficult.
 
 **Current code**:
+
 ```typescript
 try {
   const response = await fetch(userServiceUrl + "/api/v1/session", {
@@ -67,6 +70,7 @@ try {
 ```
 
 **Better approach**:
+
 ```typescript
 try {
   const response = await fetch(userServiceUrl + "/api/v1/session", {
@@ -98,6 +102,7 @@ try {
 Add a health check endpoint similar to the user service for monitoring and service discovery.
 
 **Solution**:
+
 ```typescript
 // Add to src/app.ts
 app.get("/health", async (req, res) => {
@@ -107,9 +112,9 @@ app.get("/health", async (req, res) => {
     const response = await fetch(userServiceHealthUrl, {
       signal: AbortSignal.timeout(5000),
     });
-    
+
     const userServiceStatus = response.ok ? "healthy" : "unhealthy";
-    
+
     res.json({
       service: packageJson.name,
       version: packageJson.version,
@@ -139,21 +144,22 @@ app.get("/health", async (req, res) => {
 The service accepts callback URLs without validation, which could lead to open redirect vulnerabilities.
 
 **Solution**:
+
 ```typescript
 // Create src/middleware/validation.ts
 import type { NextFunction, Request, Response } from "express";
 
 export const validateCallbackUrl = (req: Request, res: Response, next: NextFunction) => {
   const { callbackUrl } = req.query;
-  
+
   if (callbackUrl && typeof callbackUrl === "string") {
     try {
       const url = new URL(callbackUrl);
       const baseUrl = new URL(process.env.BASE_URL ?? "http://localhost:7279");
-      
+
       // Only allow same origin or user service URLs
       const userServiceUrl = new URL(process.env.USER_SERVICE_URL ?? "http://localhost:8583");
-      
+
       if (url.origin !== baseUrl.origin && url.origin !== userServiceUrl.origin) {
         console.warn(`Invalid callback URL rejected: ${callbackUrl}`);
         return res.status(400).send("Invalid callback URL");
@@ -163,7 +169,7 @@ export const validateCallbackUrl = (req: Request, res: Response, next: NextFunct
       return res.status(400).send("Invalid callback URL format");
     }
   }
-  
+
   next();
 };
 ```
@@ -187,6 +193,7 @@ src/
 ```
 
 **Create src/utils/asyncHandler.ts**:
+
 ```typescript
 import type { NextFunction, Request, Response } from "express";
 
@@ -212,6 +219,7 @@ The current tests only cover basic functionality. Add tests for:
 4. Health endpoint
 
 **Enhanced test structure**:
+
 ```typescript
 // test/app.test.ts additions
 describe("Authentication Integration", () => {
@@ -221,7 +229,7 @@ describe("Authentication Integration", () => {
     assert.equal(res.statusCode, 200);
     assert.ok(res.text.includes("Welcome, guest!"));
   });
-  
+
   it("should validate callback URLs", async () => {
     const res = await request(app).get("/?callbackUrl=https://evil.com");
     assert.equal(res.statusCode, 400);
@@ -246,19 +254,20 @@ describe("Health Check", () => {
 Add validation for required environment variables and better defaults.
 
 **Solution**:
+
 ```typescript
 // Add to src/app.ts or create src/config.ts
 const validateEnvironment = () => {
   const baseUrl = process.env.BASE_URL ?? "http://localhost:7279";
   const userServiceUrl = process.env.USER_SERVICE_URL ?? "http://localhost:8583";
-  
+
   try {
     new URL(baseUrl);
     new URL(userServiceUrl);
   } catch (error) {
     throw new Error(`Invalid URL configuration: ${error}`);
   }
-  
+
   return { baseUrl, userServiceUrl };
 };
 

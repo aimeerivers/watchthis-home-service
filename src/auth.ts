@@ -33,14 +33,18 @@ export const findUserFromSession = async (req: RequestWithUser, res: Response, n
       headers: {
         Cookie: `connect.sid=${sessionCookie}`,
       },
+      signal: AbortSignal.timeout(5000), // 5-second timeout
     });
 
     if (response.ok) {
       const data = (await response.json()) as SessionData;
       req.user = data.user;
+    } else {
+      console.log(`Session validation failed: ${response.status}`);
     }
     return next();
-  } catch {
+  } catch (error) {
+    console.error("Session validation error:", error instanceof Error ? error.message : "Unknown error");
     return next();
   }
 };

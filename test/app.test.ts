@@ -27,6 +27,18 @@ describe("App", () => {
     });
   });
 
+  describe("Health", () => {
+    it("should return health status", async () => {
+      const res = await request(app).get("/health");
+      // Health endpoint might return 503 if user service is down (which is expected in tests)
+      assert.ok(res.statusCode === 200 || res.statusCode === 503);
+      const health = JSON.parse(res.text);
+      assert.equal(health.service, "watchthis-home-service");
+      assert.ok(health.timestamp);
+      assert.ok(health.status === "healthy" || health.status === "unhealthy");
+    });
+  });
+
   after(async () => {
     server.close();
   });
