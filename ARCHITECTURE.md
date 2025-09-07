@@ -11,19 +11,19 @@ WatchThis aims to solve the problem of sharing media content with friends by pro
 ### Existing Services
 
 #### watchthis-home-service
-
 - **Purpose**: Landing page and main dashboard
 - **Tech Stack**: Node.js, Express, TypeScript, Pug templates, TailwindCSS
-- **Responsibilities**:
+- **Port**: 7279 (development), 17279 (testing)
+- **Responsibilities**: 
   - User-facing dashboard
   - Authentication integration
   - Service health monitoring
 - **Status**: ✅ Implemented and operational
 
-#### watchthis-user-service
-
+#### watchthis-user-service  
 - **Purpose**: User management and authentication
 - **Tech Stack**: Node.js, Express, TypeScript, MongoDB, Passport.js
+- **Port**: 8583 (development), 18583 (testing)
 - **Responsibilities**:
   - User signup, login, logout
   - Session management
@@ -48,6 +48,7 @@ WatchThis aims to solve the problem of sharing media content with friends by pro
 - **Purpose**: Manage shared media items and metadata
 - **Priority**: 🔴 Critical - Implement First
 - **Tech Stack**: Node.js, Express, TypeScript, MongoDB
+- **Port**: 7769 (development), 17769 (testing)
 - **Responsibilities**:
   - Store media URLs, titles, descriptions, thumbnails
   - Extract metadata from YouTube/Spotify/other platforms
