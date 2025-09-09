@@ -25,6 +25,7 @@ app.use(
         scriptSrc: ["'self'"],
         imgSrc: ["'self'", "data:", "https:"],
         fontSrc: ["'self'"],
+        formAction: ["'self'", userServiceUrl], // Allow forms to be submitted to user service
       },
     },
   })
