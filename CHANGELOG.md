@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.2.3](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.2...v2.2.3) (2025-09-09)
+
+
+### Bug Fixes
+
+* Deal with some authentication problems ([#91](https://github.com/aimeerivers/watchthis-home-service/issues/91)) ([57ad908](https://github.com/aimeerivers/watchthis-home-service/commit/57ad9087ad6f50d5d63b92dd0ce3e32aab665faf))
+
+
+### Documentation
+
+* Update architecture document to reflect completion of Phase 1 for sharing service ([#89](https://github.com/aimeerivers/watchthis-home-service/issues/89)) ([485f8aa](https://github.com/aimeerivers/watchthis-home-service/commit/485f8aaf626e471bff2d29c3822edb2516972381))
+* Update architecture document with latest progress ([#87](https://github.com/aimeerivers/watchthis-home-service/issues/87)) ([feadb94](https://github.com/aimeerivers/watchthis-home-service/commit/feadb940234122cfe642e75aefe90167ee6251ac))
+
 ## [2.2.2](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.1...v2.2.2) (2025-09-07)
 
 
