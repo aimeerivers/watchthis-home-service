@@ -71,13 +71,18 @@ WatchThis aims to solve the problem of sharing media content with friends by pro
   - ✅ Share status management (pending/watched/archived)
   - ✅ Statistics and analytics endpoints
   - ✅ Comprehensive test suite (31 passing tests)
-  - 🚧 User service authentication integration (pending)
+  - ✅ User service authentication integration (completed)
   - 📋 Media service validation (planned)
 
 ### Current Architecture Patterns
 
 - ✅ Microservice architecture with HTTP communication
 - ✅ Service-to-service authentication via session forwarding
+  - User service manages sessions and authentication
+  - Other services validate sessions via `/api/v1/session` endpoint
+  - Session cookies automatically forwarded across services
+  - Sharing service requires authentication for all API endpoints
+  - Home service shows personalized content based on authentication
 - ✅ Graceful degradation when services are unavailable
 - ✅ Health check endpoints for monitoring
 - ✅ TypeScript with ES modules
@@ -143,7 +148,7 @@ GET    /api/v1/shares/received    # Get shares received by user ✅
 GET    /api/v1/shares/stats       # Get sharing statistics ✅
 ```
 
-**Remaining Integration**: Authentication with user service (for production deployment)
+**Remaining Integration**: Media service validation (for production deployment)
 
 #### watchthis-inbox-service 📋 PLANNED
 
