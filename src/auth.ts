@@ -21,7 +21,7 @@ dotenv.config();
 const userServiceUrl = process.env.USER_SERVICE_URL ?? "http://localhost:8583";
 
 export const findUserFromSession = async (req: RequestWithUser, res: Response, next: NextFunction) => {
-  const sessionCookie = req.cookies["connect.sid"];
+  const sessionCookie = req.headers.cookie;
 
   if (!sessionCookie) {
     return next();
@@ -31,7 +31,7 @@ export const findUserFromSession = async (req: RequestWithUser, res: Response, n
     const response = await fetch(userServiceUrl + "/api/v1/session", {
       method: "GET",
       headers: {
-        Cookie: `connect.sid=${sessionCookie}`,
+        Cookie: sessionCookie,
       },
       signal: AbortSignal.timeout(5000), // 5-second timeout
     });
