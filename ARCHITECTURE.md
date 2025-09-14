@@ -77,12 +77,15 @@ WatchThis aims to solve the problem of sharing media content with friends by pro
 ### Current Architecture Patterns
 
 - ✅ Microservice architecture with HTTP communication
-- ✅ Service-to-service authentication via session forwarding
-  - User service manages sessions and authentication
-  - Other services validate sessions via `/api/v1/session` endpoint
-  - Session cookies automatically forwarded across services
-  - Sharing service requires authentication for all API endpoints
-  - Home service shows personalized content based on authentication
+- ✅ JWT-based authentication for API services
+  - User service provides JWT authentication endpoints (`/api/v1/auth/*`)
+  - Access tokens (24h expiry) for API authentication via Authorization header
+  - Refresh tokens (7d expiry) for obtaining new access tokens
+  - Services validate JWT tokens by calling user service `/api/v1/auth/me` endpoint
+  - Stateless authentication enabling better scalability and mobile support
+- ✅ Legacy session-based authentication for web interface
+  - Session cookies for web UI authentication and backwards compatibility
+  - Session validation via `/api/v1/session` endpoint
 - ✅ Graceful degradation when services are unavailable
 - ✅ Health check endpoints for monitoring
 - ✅ TypeScript with ES modules
@@ -282,6 +285,73 @@ interface UserRegisteredEvent {
 2. Sharing Service updates share status
 3. Analytics Service records consumption
 4. Notification Service may notify sharer
+
+## Authentication Architecture
+
+### JWT Token-Based Authentication ✅ IMPLEMENTED
+
+**Primary Authentication Method**: All API services should use JWT tokens for authentication.
+
+#### Authentication Flow
+
+1. **User Login**: Client sends credentials to `/api/v1/auth/login`
+2. **Token Generation**: User service returns access token (24h) + refresh token (7d)
+3. **API Requests**: Client includes access token in `Authorization: Bearer <token>` header
+4. **Token Validation**: Services validate tokens by calling user service `/api/v1/auth/me`
+5. **Token Refresh**: Use refresh token at `/api/v1/auth/refresh` to get new access token
+
+#### User Service JWT Endpoints
+
+```
+POST /api/v1/auth/login     # Login with username/password → returns JWT tokens
+POST /api/v1/auth/refresh   # Refresh access token using refresh token
+GET  /api/v1/auth/me        # Get current user info (requires JWT token)
+```
+
+#### Service Implementation Pattern
+
+Services should implement JWT authentication using this pattern:
+
+```typescript
+// 1. Extract token from Authorization header
+const authHeader = req.headers.authorization;
+const token = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : null;
+
+// 2. Validate token with user service
+const response = await fetch(`${userServiceUrl}/api/v1/auth/me`, {
+  method: "GET",
+  headers: { Authorization: `Bearer ${token}` },
+});
+
+// 3. Set user context if valid
+if (response.ok) {
+  const { data } = await response.json();
+  req.user = data.user; // { _id: string, username: string }
+}
+```
+
+#### Service Authentication Status
+
+- ✅ **User Service**: JWT endpoints implemented and tested
+- ✅ **Home Service**: JWT + session hybrid authentication (JWT preferred)
+- 📋 **Sharing Service**: Currently using session auth - **needs JWT migration**
+- 📋 **Media Service**: Needs service-to-service authentication (consider JWT service tokens)
+- 📋 **Future Services**: Should implement JWT from start
+
+### Legacy Session Authentication
+
+**Web Interface Only**: Session-based authentication is maintained for web UI compatibility.
+
+- Session cookies managed by user service
+- Session validation via `/api/v1/session` endpoint
+- Gradual migration to JWT for all interfaces
+
+### Mobile Authentication Strategy
+
+- **Primary**: JWT tokens (already implemented)
+- **Storage**: Secure storage for refresh tokens
+- **Flow**: OAuth-style flow with refresh token rotation
+- **Offline**: Cached user data with token validation on reconnect
 
 ## Database Strategy
 
