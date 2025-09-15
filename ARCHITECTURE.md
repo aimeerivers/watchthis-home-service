@@ -295,12 +295,14 @@ interface UserRegisteredEvent {
 #### Authentication Layers
 
 **Web UI Layer (Session-based)**
+
 - Traditional web pages with server-side rendering
 - Login redirects and session cookies managed by user service
 - Familiar user experience for web browsers
 - Used by: Home service dashboard, future service web interfaces
 
-**API Layer (JWT-only)**  
+**API Layer (JWT-only)**
+
 - All API services exclusively use JWT authentication
 - Stateless, scalable, mobile-ready
 - No hybrid complexity - single auth method per service
@@ -311,25 +313,25 @@ interface UserRegisteredEvent {
 #### Web User Journey
 
 1. **Session Login**: User visits home service → redirected to user service login
-2. **Session Creation**: User service creates session cookie after successful login  
+2. **Session Creation**: User service creates session cookie after successful login
 3. **JWT Conversion**: When home service needs to call APIs, it converts session to JWT
 4. **API Calls**: Home service uses JWT tokens to call other services
 5. **Clean Separation**: Web pages use sessions, API calls use JWT
 
 ```typescript
 // Home service flow
-app.get('/dashboard', ensureAuthenticated, async (req, res) => {
+app.get("/dashboard", ensureAuthenticated, async (req, res) => {
   // 1. User has session (from session middleware)
-  
+
   // 2. Convert session to JWT when needed for API calls
   const tokens = await userService.getJWTFromSession(req.headers.cookie);
-  
+
   // 3. Use JWT to call other services
   const shares = await sharingService.getShares(tokens.accessToken);
   const inbox = await inboxService.getInbox(tokens.accessToken);
-  
+
   // 4. Render page with data
-  res.render('dashboard', { shares, inbox });
+  res.render("dashboard", { shares, inbox });
 });
 ```
 
@@ -352,7 +354,7 @@ export const sessionToJWT = async (req: RequestWithUser, res: Response): Promise
     if (!req.isAuthenticated() || !req.user) {
       res.status(401).json({
         success: false,
-        error: { code: "NO_SESSION", message: "No valid session found" }
+        error: { code: "NO_SESSION", message: "No valid session found" },
       });
       return;
     }
@@ -364,14 +366,14 @@ export const sessionToJWT = async (req: RequestWithUser, res: Response): Promise
       success: true,
       data: {
         user: { _id: req.user._id, username: req.user.username },
-        ...tokens
-      }
+        ...tokens,
+      },
     });
   } catch (error) {
     console.error("Session to JWT conversion error:", error);
     res.status(500).json({
       success: false,
-      error: { code: "CONVERSION_ERROR", message: "Failed to convert session to JWT" }
+      error: { code: "CONVERSION_ERROR", message: "Failed to convert session to JWT" },
     });
   }
 };
@@ -384,8 +386,8 @@ class UserServiceClient {
   async getJWTFromSession(sessionCookie: string): Promise<JWTTokens | null> {
     try {
       const response = await fetch(`${userServiceUrl}/api/v1/auth/session-to-jwt`, {
-        method: 'GET',
-        headers: { 'Cookie': sessionCookie }
+        method: "GET",
+        headers: { Cookie: sessionCookie },
       });
 
       if (response.ok) {
@@ -393,12 +395,12 @@ class UserServiceClient {
         return {
           accessToken: data.accessToken,
           refreshToken: data.refreshToken,
-          expiresIn: data.expiresIn
+          expiresIn: data.expiresIn,
         };
       }
       return null;
     } catch (error) {
-      console.error('Failed to get JWT from session:', error);
+      console.error("Failed to get JWT from session:", error);
       return null;
     }
   }
@@ -454,11 +456,13 @@ export const requireJWT = async (req: RequestWithUser, res: Response, next: Next
 #### User Service JWT Endpoints
 
 ```
-POST /api/v1/auth/login         # Direct login → returns JWT tokens (for mobile)
-POST /api/v1/auth/refresh       # Refresh access token using refresh token  
-GET  /api/v1/auth/me            # Get current user info (requires JWT token)
-GET  /api/v1/auth/session-to-jwt # Convert session to JWT tokens (for web services)
-```
+
+POST /api/v1/auth/login # Direct login → returns JWT tokens (for mobile)
+POST /api/v1/auth/refresh # Refresh access token using refresh token  
+GET /api/v1/auth/me # Get current user info (requires JWT token)
+GET /api/v1/auth/session-to-jwt # Convert session to JWT tokens (for web services)
+
+````
 
 #### Token Configuration
 
@@ -466,16 +470,17 @@ GET  /api/v1/auth/session-to-jwt # Convert session to JWT tokens (for web servic
 # Access token: Short-lived for security
 JWT_EXPIRES_IN=24h
 
-# Refresh token: Longer-lived for convenience  
+# Refresh token: Longer-lived for convenience
 JWT_REFRESH_EXPIRES_IN=7d
 
 # JWT secret: Auto-generated if not provided
 JWT_SECRET=your-secret-key
-```
+````
 
 #### JWT Authentication Flows
 
 **Direct JWT Login (Mobile Apps)**
+
 1. **Login**: App sends credentials to `/api/v1/auth/login`
 2. **Token Pair**: User service returns access token (24h) + refresh token (7d)
 3. **API Requests**: App includes access token in `Authorization: Bearer <token>` header
@@ -483,6 +488,7 @@ JWT_SECRET=your-secret-key
 5. **Token Refresh**: Use refresh token at `/api/v1/auth/refresh` before access token expires
 
 **Session-to-JWT Bridge (Web Services)**
+
 1. **Session**: Web service has user session cookie
 2. **Conversion**: Service calls `/api/v1/auth/session-to-jwt` with session cookie
 3. **JWT Tokens**: User service returns JWT tokens for the session user
@@ -500,20 +506,24 @@ JWT_SECRET=your-secret-key
 ### Implementation Strategy
 
 #### Phase 1: Complete JWT Infrastructure ✅
+
 - JWT endpoints implemented in user service
 - Session-to-JWT bridge endpoint ready
 
 #### Phase 2: Migrate Services to JWT-Only 🚧 Current Priority
+
 - **Sharing Service**: Remove session auth, implement JWT-only middleware
 - **Home Service**: Add session-to-JWT conversion for API calls
 - Test end-to-end flow: session login → JWT conversion → API calls
 
 #### Phase 3: New Services JWT-First
+
 - **Inbox Service**: Implement with JWT-only authentication from start
 - **Media Service**: Add service-to-service JWT authentication
 - Establish JWT-only pattern for all new services
 
 #### Phase 4: Service-to-Service Authentication
+
 - Implement service credential management
 - Add service-to-service JWT tokens for internal API security
 - Complete zero-trust service architecture
