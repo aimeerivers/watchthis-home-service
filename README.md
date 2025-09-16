@@ -21,12 +21,11 @@ This service acts as a bridge between the web UI (which uses sessions) and the m
 
 ## Getting started
 
-Add a `.env` file and add some environment variables:
+### Environment Variables
 
-```text
-BASE_URL=http://localhost:7279
-USER_SERVICE_URL=http://localhost:8583
-```
+All service URLs are configured via environment variables. Copy `.env.example` to `.env` and adjust as needed.
+
+### Install Dependencies
 
 Install npm dependencies
 
