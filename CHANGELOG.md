@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.2.4](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.3...v2.2.4) (2025-09-16)
+
+
+### Chores
+
+* Add a .env.example and update the README to refer to it ([#103](https://github.com/aimeerivers/watchthis-home-service/issues/103)) ([c1a5110](https://github.com/aimeerivers/watchthis-home-service/commit/c1a51105da8d6151f6766f7a3451c9d2d0e91d63))
+
+
+### Documentation
+
+* Update architecture document to reflect JWT authentication implementation and migration plan ([#97](https://github.com/aimeerivers/watchthis-home-service/issues/97)) ([9881632](https://github.com/aimeerivers/watchthis-home-service/commit/9881632ad2856ad96b4094c5041eb753823338f5))
+* Update architecture document with current state ([#95](https://github.com/aimeerivers/watchthis-home-service/issues/95)) ([1828467](https://github.com/aimeerivers/watchthis-home-service/commit/18284678c3c3a1c0046912e24a506c19356589d3))
+* Update architecture document with further details about JWT strategy ([#99](https://github.com/aimeerivers/watchthis-home-service/issues/99)) ([106e16b](https://github.com/aimeerivers/watchthis-home-service/commit/106e16b3c33bfc9626a4ceee0eb1cb2adfbb7266))
+* Update documentation about session-to-JWT ([#101](https://github.com/aimeerivers/watchthis-home-service/issues/101)) ([32c7f00](https://github.com/aimeerivers/watchthis-home-service/commit/32c7f005dd9e578f280aa7e6f06ed007eec7102f))
+
 ## [2.2.3](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.2...v2.2.3) (2025-09-09)
 
 
