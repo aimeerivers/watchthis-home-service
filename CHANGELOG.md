@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.2.5](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.4...v2.2.5) (2025-09-18)
+
+
+### Chores
+
+* Configure Release Please v4 properly ([#106](https://github.com/aimeerivers/watchthis-home-service/issues/106)) ([974a226](https://github.com/aimeerivers/watchthis-home-service/commit/974a226243098cf21c289f5f26609caf75d90461))
+* Try another Release Please configuration ([#108](https://github.com/aimeerivers/watchthis-home-service/issues/108)) ([163cf6a](https://github.com/aimeerivers/watchthis-home-service/commit/163cf6a8fe9076577e9e137f2e91d05c06634bc0))
+
+
+### Continuous Integration
+
+* Update to use Release Please v4 ([#105](https://github.com/aimeerivers/watchthis-home-service/issues/105)) ([cc59313](https://github.com/aimeerivers/watchthis-home-service/commit/cc59313b015164a558d884a641546929aa577f40))
+
+
+### Bug Fixes
+
+* Configure tag search strategy ([#110](https://github.com/aimeerivers/watchthis-home-service/issues/110)) ([2339013](https://github.com/aimeerivers/watchthis-home-service/commit/2339013c6ba314b505a40569bdd3f95da2dd4776))
+* Try something else for Release Please ([#107](https://github.com/aimeerivers/watchthis-home-service/issues/107)) ([751b6c1](https://github.com/aimeerivers/watchthis-home-service/commit/751b6c1e8ad4d4f8c2351bcd9ac98671cea49992))
+
 ## [2.2.4](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.3...v2.2.4) (2025-09-16)
 
 
