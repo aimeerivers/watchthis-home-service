@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.6](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.5...v2.2.6) (2025-09-18)
+
+
+### Chores
+
+* Improve the order of how things get included in release notes ([#112](https://github.com/aimeerivers/watchthis-home-service/issues/112)) ([6853d04](https://github.com/aimeerivers/watchthis-home-service/commit/6853d049acf7e5b83f5b42f17c2bfaa1bcd648a4))
+
 ## [2.2.5](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.4...v2.2.5) (2025-09-18)
 
 
