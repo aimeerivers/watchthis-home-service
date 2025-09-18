@@ -1,0 +1,10 @@
+{
+  "changelog-sections": [
+    { "type": "chore", "section": "Chores" },
+    { "type": "ci", "section": "Continuous Integration" },
+    { "type": "deps", "section": "Dependencies" },
+    { "type": "docs", "section": "Documentation" },
+    { "type": "feat", "section": "Features" },
+    { "type": "fix", "section": "Bug Fixes" }
+  ]
+}
