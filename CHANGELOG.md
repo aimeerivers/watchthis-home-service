@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.8](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.7...v2.2.8) (2025-09-21)
+
+
+### Chores
+
+* Update @tailwindcss/typography to 0.5.18 ([#116](https://github.com/aimeerivers/watchthis-home-service/issues/116)) ([4f6e768](https://github.com/aimeerivers/watchthis-home-service/commit/4f6e76878698aad32ffbcd9529400fadfeab655b))
+
 ## [2.2.7](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.6...v2.2.7) (2025-09-18)
 
 
