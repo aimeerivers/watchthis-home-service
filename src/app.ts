@@ -12,6 +12,8 @@ dotenv.config();
 
 const baseUrl = process.env.BASE_URL ?? "http://localhost:7279";
 const userServiceUrl = process.env.USER_SERVICE_URL ?? "http://localhost:8583";
+const userServicePublicUrl =
+  process.env.USER_SERVICE_PUBLIC_URL ?? process.env.USER_SERVICE_URL ?? "http://localhost:8583";
 
 const app = express();
 
@@ -25,7 +27,7 @@ app.use(
         scriptSrc: ["'self'"],
         imgSrc: ["'self'", "data:", "https:"],
         fontSrc: ["'self'"],
-        formAction: ["'self'", userServiceUrl], // Allow forms to be submitted to user service
+        formAction: ["'self'", userServicePublicUrl], // Allow forms to be submitted to user service
       },
     },
   })
@@ -39,7 +41,11 @@ app.set("views", path.join(appRootPath.path, "views"));
 app.use(express.static(path.join(appRootPath.path, "public")));
 
 app.get("/", findUserFromSession, (req: RequestWithUser, res) => {
-  res.render("home-page", { user: req.user, userServiceUrl, callbackUrl: new URL(req.url, baseUrl).toString() });
+  res.render("home-page", {
+    user: req.user,
+    userServiceUrl: userServicePublicUrl,
+    callbackUrl: new URL(req.url, baseUrl).toString(),
+  });
 });
 
 app.get("/ping", (_req, res) => {
