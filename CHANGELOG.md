@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.9](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.8...v2.2.9) (2025-10-04)
+
+
+### Bug Fixes
+
+* Make domain stuff work in Docker ([#120](https://github.com/aimeerivers/watchthis-home-service/issues/120)) ([a1ceea8](https://github.com/aimeerivers/watchthis-home-service/commit/a1ceea843ff95f70576af6529ae834ad1ca099f9))
+
+
+### Chores
+
+* Enable a Docker image to be built ([#118](https://github.com/aimeerivers/watchthis-home-service/issues/118)) ([05e3e03](https://github.com/aimeerivers/watchthis-home-service/commit/05e3e03e55879725edcd994505bb151e47d8490e))
+
 ## [2.2.8](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.7...v2.2.8) (2025-09-21)
 
 
