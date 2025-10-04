@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.9](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.8...v2.2.9) (2025-10-04)
+
+
+### Chores
+
+* Enable a Docker image to be built ([#118](https://github.com/aimeerivers/watchthis-home-service/issues/118)) ([05e3e03](https://github.com/aimeerivers/watchthis-home-service/commit/05e3e03e55879725edcd994505bb151e47d8490e))
+
 ## [2.2.8](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.7...v2.2.8) (2025-09-21)
 
 
