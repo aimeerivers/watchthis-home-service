@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.10](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.9...v2.2.10) (2025-10-05)
+
+
+### Continuous Integration
+
+* Build and Publish a Docker image ([#122](https://github.com/aimeerivers/watchthis-home-service/issues/122)) ([61a5cdc](https://github.com/aimeerivers/watchthis-home-service/commit/61a5cdcf680d9c72fbdfffe621951abba3e43578))
+
 ## [2.2.9](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.8...v2.2.9) (2025-10-04)
 
 
