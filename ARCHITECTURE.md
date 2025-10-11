@@ -424,7 +424,7 @@ export const requireJWT = async (req: RequestWithUser, res: Response, next: Next
   if (!token) {
     res.status(401).json({
       success: false,
-      error: { code: "NO_TOKEN", message: "JWT token required" }
+      error: { code: "NO_TOKEN", message: "JWT token required" },
     });
     return;
   }
@@ -433,7 +433,7 @@ export const requireJWT = async (req: RequestWithUser, res: Response, next: Next
     // Validate token with user service
     const response = await fetch(`${userServiceUrl}/api/v1/auth/me`, {
       method: "GET",
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     if (response.ok) {
@@ -443,104 +443,27 @@ export const requireJWT = async (req: RequestWithUser, res: Response, next: Next
     } else {
       res.status(401).json({
         success: false,
-        error: { code: "INVALID_TOKEN", message: "Invalid JWT token" }
+        error: { code: "INVALID_TOKEN", message: "Invalid JWT token" },
       });
     }
   } catch (error) {
     console.error("JWT validation error:", error);
     res.status(401).json({
       success: false,
-      error: { code: "VALIDATION_ERROR", message: "Token validation failed" }
+      error: { code: "VALIDATION_ERROR", message: "Token validation failed" },
     });
   }
 };
-
-### JWT Token Management ✅ IMPLEMENTED
-
-#### User Service JWT Endpoints
-
 ```
-
-POST /api/v1/auth/login # Direct login → returns JWT tokens (for mobile)
-POST /api/v1/auth/refresh # Refresh access token using refresh token  
-GET /api/v1/auth/me # Get current user info (requires JWT token)
-GET /api/v1/auth/session-to-jwt # Convert session to JWT tokens (for web services)
-
-````
-
-#### Token Configuration
-
-```bash
-# Access token: Short-lived for security
-JWT_EXPIRES_IN=24h
-
-# Refresh token: Longer-lived for convenience
-JWT_REFRESH_EXPIRES_IN=7d
-
-# JWT secret: Auto-generated if not provided
-JWT_SECRET=your-secret-key
-````
-
-#### JWT Authentication Flows
-
-**Direct JWT Login (Mobile Apps)**
-
-1. **Login**: App sends credentials to `/api/v1/auth/login`
-2. **Token Pair**: User service returns access token (24h) + refresh token (7d)
-3. **API Requests**: App includes access token in `Authorization: Bearer <token>` header
-4. **Token Validation**: Services validate tokens by calling user service `/api/v1/auth/me`
-5. **Token Refresh**: Use refresh token at `/api/v1/auth/refresh` before access token expires
-
-**Session-to-JWT Bridge (Web Services)**
-
-1. **Session**: Web service has user session cookie
-2. **Conversion**: Service calls `/api/v1/auth/session-to-jwt` with session cookie
-3. **JWT Tokens**: User service returns JWT tokens for the session user
-4. **API Calls**: Web service uses JWT tokens to call other APIs
 
 ### Service Authentication Status
 
 - ✅ **User Service**: JWT endpoints implemented and tested + session-to-JWT bridge
 - ✅ **Home Service**: Session-based web UI + JWT for API calls (session-to-JWT bridge ready)
 - ✅ **Sharing Service**: **JWT-only APIs completed** - Full JWT authentication implemented
-- 📋 **Media Service**: Needs service-to-service authentication (JWT service tokens)
+- ✅ **Media Service**: User-based JWT authentication complete. May need service-to-service authentication (JWT service tokens)
 - 📋 **Inbox Service**: Should implement JWT-only from start
-- 📋 **Future Services**: Should implement JWT-only pattern from start
-
-### Implementation Strategy
-
-#### Phase 1: Complete JWT Infrastructure ✅
-
-- JWT endpoints implemented in user service
-- Session-to-JWT bridge endpoint ready
-
-#### Phase 2: Migrate Services to JWT-Only ✅ COMPLETED
-
-- ✅ **Sharing Service**: JWT-only middleware implemented and tested (31 tests passing)
-- 📋 **Home Service**: Add session-to-JWT conversion for API calls
-- ✅ **End-to-end JWT flow**: Complete authentication architecture ready
-
-#### Phase 3: New Services JWT-First
-
-- **Inbox Service**: Implement with JWT-only authentication from start
-- **Media Service**: Add service-to-service JWT authentication
-- Establish JWT-only pattern for all new services
-
-#### Phase 4: Service-to-Service Authentication
-
-- Implement service credential management
-- Add service-to-service JWT tokens for internal API security
-- Complete zero-trust service architecture
-
-### Benefits of Session-to-JWT Bridge
-
-✅ **Clean Architecture**: Each service has single authentication method  
-✅ **No Hybrid Complexity**: APIs are purely JWT, no dual auth logic  
-✅ **Familiar Web UX**: Traditional session login flow preserved  
-✅ **Mobile Ready**: Pure JWT flow available for apps  
-✅ **Scalable**: All APIs are stateless with JWT tokens  
-✅ **Future-Proof**: Clear JWT-first architecture for new services  
-✅ **Simple Migration**: Convert existing services to JWT-only one at a time
+- 📋 **Future Services**: Should implement JWT-only from start
 
 ## Database Strategy
 
@@ -712,7 +635,7 @@ interface ApiResponse<T> {
 
 ## Implementation Roadmap
 
-### ✅ COMPLETED: Phase 1A - Media Service (Target: 4-6 weeks)
+### ✅ COMPLETED: Phase 1A - Media Service
 
 #### ✅ Weeks 1-2: Media Service Foundation
 
@@ -730,9 +653,9 @@ interface ApiResponse<T> {
 - ✅ Full CRUD operations
 - ✅ Comprehensive test suite with 80%+ coverage
 
-### 🚧 IN PROGRESS: Phase 1B - Sharing Service (Target: 2-3 weeks)
+### 🚧 IN PROGRESS: Phase 1B - Sharing Service
 
-#### Week 1: Core Sharing Implementation ✅ COMPLETED
+#### Core Sharing Implementation ✅ COMPLETED
 
 - ✅ Service structure and boilerplate completed
 - ✅ **DONE**: Implement MongoDB schema for shares
@@ -740,18 +663,18 @@ interface ApiResponse<T> {
 - ✅ **DONE**: Add share status tracking (pending, watched, archived)
 - ✅ **DONE**: Implement statistics endpoints
 
-#### Week 2: Testing and Integration ✅ COMPLETED
+#### Testing and Integration ✅ COMPLETED
 
-- ✅ Create comprehensive test suite for sharing operations (31 passing tests)
+- ✅ Create comprehensive test suite for sharing operations
 - ✅ Add error handling and validation
 - ✅ Document API endpoints and usage
 - ✅ **JWT-only authentication implementation completed**
 - ✅ Full integration with user-service JWT authentication
 - 📋 Integration with media-service (planned for production)
 
-### 📋 UPCOMING: Phase 1C - Inbox Service & Integration (Target: 3-4 weeks)
+### 📋 UPCOMING: Phase 1C - Inbox Service & Integration
 
-#### Week 3-4: Inbox Service Development
+#### Inbox Service Development
 
 - 📋 Set up service structure (using established JWT-only pattern)
 - 📋 Design inbox aggregation logic
@@ -760,7 +683,7 @@ interface ApiResponse<T> {
 - 📋 Create denormalized views for performance
 - 📋 Add real-time inbox updates
 
-#### Week 5-6: Dashboard Enhancement & MVP Complete
+#### Dashboard Enhancement & MVP Complete
 
 - 📋 Enhance home service with rich dashboard features
 - 📋 Implement session-to-JWT conversion in home service
@@ -769,93 +692,32 @@ interface ApiResponse<T> {
 - 📋 End-to-end testing of complete sharing workflow
 - 📋 MVP deployment and user testing
 
-### Phase 2: Enhanced Experience (Target: 3-4 weeks) - PLANNED
+### Phase 2: Enhanced Experience
 
-#### Weeks 7-8: Notification Service
+#### Notification Service
 
 - 📋 Set up service structure
 - 📋 Implement email notifications
 - 📋 Add real-time WebSocket notifications
 - 📋 Integrate notification preferences
 
-#### Weeks 9-10: API Gateway & Polish
+#### API Gateway & Polish
 
 - 📋 Set up API gateway service
 - 📋 Implement request routing and aggregation
 - 📋 Add rate limiting and caching
 - 📋 Polish UI/UX based on testing feedback
 
-## 🎯 Immediate Next Steps (This Week)
+### Phase 3: Advanced Features
 
-### Priority 1: Complete Sharing Service Core
-
-1. **Design Shares MongoDB Schema**
-
-   ```javascript
-   // Shares collection structure needed
-   {
-     _id: ObjectId,
-     mediaId: ObjectId,     // Reference to media-service
-     fromUserId: ObjectId,  // Reference to user-service
-     toUserId: ObjectId,    // Reference to user-service
-     message: String,       // Optional message with share
-     status: String,        // 'pending', 'watched', 'archived'
-     watchedAt: Date,
-     createdAt: Date,
-     updatedAt: Date
-   }
-   ```
-
-2. **Implement Core API Endpoints**
-   - POST /api/v1/shares (create new share)
-   - GET /api/v1/shares/:id (get share details)
-   - GET /api/v1/shares/sent (user's sent shares)
-   - GET /api/v1/shares/received (user's received shares)
-   - PATCH /api/v1/shares/:id/watched (mark as watched)
-
-3. **Add Service Integration**
-   - Validate mediaId exists in media-service
-   - Validate userIds exist in user-service
-   - Handle service communication errors gracefully
-
-### Priority 2: Service Health and Monitoring
-
-1. **Update Home Service Dashboard**
-   - Add sharing-service to health monitoring
-   - Display sharing-service status on dashboard
-   - Update service links and navigation
-
-2. **Inter-Service Communication**
-   - Establish HTTP communication patterns
-   - Add service discovery/configuration
-   - Implement proper error handling
-
-### Phase 2: Enhanced Experience (Target: 3-4 weeks)
-
-#### Week 7-8: Notification Service
-
-- [ ] Set up service structure
-- [ ] Implement email notifications
-- [ ] Add real-time WebSocket notifications
-- [ ] Integrate notification preferences
-
-#### Week 9-10: API Gateway & Polish
-
-- [ ] Set up API gateway service
-- [ ] Implement request routing and aggregation
-- [ ] Add rate limiting and caching
-- [ ] Polish UI/UX based on testing feedback
-
-### Phase 3: Advanced Features (Target: 4-6 weeks)
-
-#### Weeks 11-14: Analytics & Social
+#### Analytics & Social
 
 - [ ] Analytics service for usage tracking
 - [ ] Friend management system
 - [ ] Recommendation engine
 - [ ] Mobile app API optimization
 
-#### Weeks 15-16: Mobile App Foundation
+#### Mobile App Foundation
 
 - [ ] Mobile-optimized API endpoints
 - [ ] Authentication flow for mobile
