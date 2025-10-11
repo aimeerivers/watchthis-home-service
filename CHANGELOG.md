@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.11](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.10...v2.2.11) (2025-10-11)
+
+
+### Documentation
+
+* Improve the README for legibility and relevance ([#126](https://github.com/aimeerivers/watchthis-home-service/issues/126)) ([aeec6a8](https://github.com/aimeerivers/watchthis-home-service/commit/aeec6a805ac02d38c9e50f3e4550551fd78c8de8))
+
 ## [2.2.10](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.9...v2.2.10) (2025-10-05)
 
 
