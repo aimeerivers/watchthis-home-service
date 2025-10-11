@@ -460,10 +460,10 @@ export const requireJWT = async (req: RequestWithUser, res: Response, next: Next
 
 - ✅ **User Service**: JWT endpoints implemented and tested + session-to-JWT bridge
 - ✅ **Home Service**: Session-based web UI + JWT for API calls (session-to-JWT bridge ready)
-- ✅ **Sharing Service**: Full JWT authentication completed
-- ✅ **Media Service**: User-based JWT authentication completed. May need service-to-service authentication (JWT service tokens)
-- 📋 **Inbox Service**: Should implement JWT authentication from start
-- 📋 **Future Services**: Should implement JWT authentication from start
+- ✅ **Sharing Service**: Full JWT authentication implemented
+- ✅ **Media Service**: User-based JWT authentication implemented. May need service-to-service authentication (JWT service tokens)
+- 📋 **Inbox Service**: Should implement JWT-only from start
+- 📋 **Future Services**: Should implement JWT-only from start
 
 ## Database Strategy
 
