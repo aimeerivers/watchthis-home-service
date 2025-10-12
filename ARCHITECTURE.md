@@ -198,6 +198,7 @@ GET    /api/v1/inbox/stats        # Get inbox statistics
   - Support YouTube API, generic web scraping, and future platforms
 
 **Integration with Media Service**:
+
 - Media service adds new URLs to extraction queue upon creation
 - Extractor service processes queue and updates media items internally
 - No external API access for editing - maintains repository integrity
