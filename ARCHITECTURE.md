@@ -37,23 +37,23 @@ WatchThis aims to solve the problem of sharing media content with friends by pro
 
 #### watchthis-media-service
 
-- **Purpose**: Manage shared media items and metadata
+- **Purpose**: Repository of known media links with automatic metadata extraction
 - **Tech Stack**: Node.js, Express, TypeScript, MongoDB, Mongoose
 - **Port**: 7769 (development), 17769 (testing)
 - **Responsibilities**:
-  - Store media URLs, titles, descriptions, metadata
+  - Store media URLs in centralized repository (write-once, read-many)
   - URL validation and normalization
   - Platform detection (YouTube, generic)
   - Media search and filtering APIs
-  - CRUD operations for media items
-- **Status**: ✅ Phase 1 Complete! Core functionality implemented
+  - Automatic metadata extraction via queue processing (Phase 2)
+- **Status**: ✅ Phase 1 Complete! Repository functionality implemented
 - **Implemented Features**:
-  - ✅ Full CRUD API endpoints
+  - ✅ Repository API endpoints (add, read, search - no editing)
   - ✅ MongoDB schema and models
   - ✅ URL validation and normalization
   - ✅ Platform detection (YouTube focus)
   - ✅ Search and filtering capabilities
-  - ✅ Comprehensive test suite (80%+ coverage)
+  - ✅ Comprehensive test suite
 
 #### watchthis-sharing-service
 
@@ -101,30 +101,30 @@ WatchThis aims to solve the problem of sharing media content with friends by pro
 
 #### watchthis-media-service ✅ COMPLETED
 
-- **Purpose**: Manage shared media items and metadata
+- **Purpose**: Repository of known media links with automatic metadata extraction
 - **Priority**: ✅ Complete - Phase 1 Done!
 - **Tech Stack**: Node.js, Express, TypeScript, MongoDB
-- **Port**: 8584 (development), 18584 (testing)
-- **Status**: ✅ Full CRUD API implemented with comprehensive testing
+- **Port**: 7769 (development), 17769 (testing)
+- **Status**: ✅ Repository API implemented with comprehensive testing
 
 **Completed Features**:
 
-- ✅ Store media URLs, titles, descriptions, metadata
+- ✅ Store media URLs in centralized repository (write-once, read-many)
 - ✅ URL validation and normalization (YouTube focus)
 - ✅ Platform detection and categorization
 - ✅ Search and filtering APIs
 - ✅ MongoDB schema with Mongoose ODM
-- ✅ Comprehensive test suite
+- ✅ Comprehensive test suite (17 passing tests)
+- ✅ Repository model ensuring data integrity and consistency
 
 **Key Endpoints**:
 
 ```
-POST   /api/v1/media              # Add new media ✅
+POST   /api/v1/media              # Add new media to repository ✅
 GET    /api/v1/media/:id          # Get media details ✅
-GET    /api/v1/media/extract      # Extract metadata from URL ✅
-PATCH  /api/v1/media/:id          # Update media metadata ✅
-DELETE /api/v1/media/:id          # Remove media ✅
-GET    /api/v1/media/search       # Search media items ✅
+GET    /api/v1/media              # List media with pagination ✅
+GET    /api/v1/media/extract      # Preview metadata extraction (read-only) ✅
+GET    /api/v1/media/search       # Search media repository ✅
 ```
 
 #### watchthis-sharing-service ✅ COMPLETED
@@ -182,6 +182,26 @@ GET    /api/v1/inbox/stats        # Get inbox statistics
 ```
 
 ### Enhancement Services (Phase 2)
+
+#### watchthis-metadata-extractor-service
+
+- **Purpose**: Automatic metadata extraction for media items via queue processing
+- **Priority**: 🟠 High - Essential for rich media experience
+- **Tech Stack**: Node.js, Express, TypeScript, Redis/Bull Queue, MongoDB
+- **Port**: TBD (suggested: 7889)
+- **Responsibilities**:
+  - Process media URLs from queue for metadata extraction
+  - Extract titles, descriptions, thumbnails, durations from various platforms
+  - Handle rate limiting and API quotas for external services
+  - Update media items in repository with extracted data
+  - Provide re-extraction capabilities for failed or stale metadata
+  - Support YouTube API, generic web scraping, and future platforms
+
+**Integration with Media Service**:
+- Media service adds new URLs to extraction queue upon creation
+- Extractor service processes queue and updates media items internally
+- No external API access for editing - maintains repository integrity
+- Supports retry logic and graceful failure handling
 
 #### watchthis-notification-service
 
