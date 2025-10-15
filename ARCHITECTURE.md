@@ -25,7 +25,7 @@ WatchThis aims to solve the problem of sharing media content with friends by pro
 #### watchthis-user-service
 
 - **Purpose**: User management and authentication
-- **Tech Stack**: Node.js, Express, TypeScript, MongoDB, Passport.js
+- **Tech Stack**: Node.js, Express, TypeScript, PostgreSQL, Prisma, Passport.js
 - **Port**: 8583 (development), 18583 (testing)
 - **Responsibilities**:
   - User signup, login, logout
@@ -38,7 +38,7 @@ WatchThis aims to solve the problem of sharing media content with friends by pro
 #### watchthis-media-service
 
 - **Purpose**: Repository of known media links with automatic metadata extraction
-- **Tech Stack**: Node.js, Express, TypeScript, MongoDB, Mongoose
+- **Tech Stack**: Node.js, Express, TypeScript, PostgreSQL, Prisma
 - **Port**: 7769 (development), 17769 (testing)
 - **Responsibilities**:
   - Store media URLs in centralized repository (write-once, read-many)
@@ -49,7 +49,7 @@ WatchThis aims to solve the problem of sharing media content with friends by pro
 - **Status**: ✅ Phase 1 Complete! Repository functionality implemented
 - **Implemented Features**:
   - ✅ Repository API endpoints (add, read, search - no editing)
-  - ✅ MongoDB schema and models
+  - ✅ PostgreSQL schema and models
   - ✅ URL validation and normalization
   - ✅ Platform detection (YouTube focus)
   - ✅ Search and filtering capabilities
@@ -58,7 +58,7 @@ WatchThis aims to solve the problem of sharing media content with friends by pro
 #### watchthis-sharing-service
 
 - **Purpose**: Handle the sharing logic between users
-- **Tech Stack**: Node.js, Express, TypeScript, MongoDB, Mongoose
+- **Tech Stack**: Node.js, Express, TypeScript, PostgreSQL, Prisma
 - **Port**: 8372 (development), 18372 (testing)
 - **Responsibilities**:
   - Create shares (user A shares media X with user B)
@@ -69,7 +69,7 @@ WatchThis aims to solve the problem of sharing media content with friends by pro
 - **Implemented Features**:
   - ✅ Service structure and boilerplate
   - ✅ Basic Express app with middleware
-  - ✅ Complete MongoDB schema with indexing
+  - ✅ Complete PostgreSQL schema with indexing
   - ✅ Full CRUD API endpoints (all 7 endpoints)
   - ✅ Share status management (pending/watched/archived)
   - ✅ Statistics and analytics endpoints
@@ -103,7 +103,7 @@ WatchThis aims to solve the problem of sharing media content with friends by pro
 
 - **Purpose**: Repository of known media links with automatic metadata extraction
 - **Priority**: ✅ Complete - Phase 1 Done!
-- **Tech Stack**: Node.js, Express, TypeScript, MongoDB
+- **Tech Stack**: Node.js, Express, TypeScript, PostgreSQL, Prisma
 - **Port**: 7769 (development), 17769 (testing)
 - **Status**: ✅ Repository API implemented with comprehensive testing
 
@@ -113,7 +113,7 @@ WatchThis aims to solve the problem of sharing media content with friends by pro
 - ✅ URL validation and normalization (YouTube focus)
 - ✅ Platform detection and categorization
 - ✅ Search and filtering APIs
-- ✅ MongoDB schema with Mongoose ODM
+- ✅ PostgreSQL schema with Prisma ORM
 - ✅ Comprehensive test suite (17 passing tests)
 - ✅ Repository model ensuring data integrity and consistency
 
@@ -131,13 +131,13 @@ GET    /api/v1/media/search       # Search media repository ✅
 
 - **Purpose**: Handle the sharing logic between users
 - **Priority**: ✅ Complete - Phase 1 Done!
-- **Tech Stack**: Node.js, Express, TypeScript, MongoDB
+- **Tech Stack**: Node.js, Express, TypeScript, PostgreSQL, Prisma
 - **Port**: 8372 (development), 18372 (testing)
 - **Status**: ✅ Full CRUD API implemented with comprehensive testing
 
 **Completed Features**:
 
-- ✅ Complete MongoDB schema with proper indexing
+- ✅ Complete PostgreSQL schema with proper indexing
 - ✅ Full user validation and error handling
 - ✅ Share status tracking (pending/watched/archived)
 - ✅ Statistics and analytics endpoints
@@ -161,7 +161,7 @@ GET    /api/v1/shares/stats       # Get sharing statistics ✅
 
 - **Purpose**: Manage user's personal inbox of shared content
 - **Priority**: 🔴 Critical - Implement After Sharing Service
-- **Tech Stack**: Node.js, Express, TypeScript, MongoDB
+- **Tech Stack**: Node.js, Express, TypeScript, PostgreSQL, Prisma
 - **Port**: TBD (suggested: 7378)
 - **Status**: 📋 Not yet started - depends on sharing service completion
 - **Responsibilities**:
@@ -187,7 +187,7 @@ GET    /api/v1/inbox/stats        # Get inbox statistics
 
 - **Purpose**: Automatic metadata extraction for media items via queue processing
 - **Priority**: 🟠 High - Essential for rich media experience
-- **Tech Stack**: Node.js, Express, TypeScript, Redis/Bull Queue, MongoDB
+- **Tech Stack**: Node.js, Express, TypeScript, Redis/Bull Queue, PostgreSQL, Prisma
 - **Port**: TBD (suggested: 7889)
 - **Responsibilities**:
   - Process media URLs from queue for metadata extraction
@@ -490,105 +490,105 @@ export const requireJWT = async (req: RequestWithUser, res: Response, next: Next
 
 ### Service-Specific Databases
 
-#### User Service - MongoDB ✅ IMPLEMENTED
+#### User Service - PostgreSQL ✅ IMPLEMENTED
 
-```javascript
-// User collection
-{
-  _id: ObjectId,
-  username: String,
-  email: String,
-  passwordHash: String,
-  profile: {
-    displayName: String,
-    avatar: String,
-    preferences: Object
-  },
-  createdAt: Date,
-  updatedAt: Date
+```prisma
+// User model
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  displayName  String?
+  avatar       String?
+  preferences  Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 ```
 
-#### Media Service - MongoDB ✅ IMPLEMENTED
+#### Media Service - PostgreSQL ✅ IMPLEMENTED
 
-```javascript
-// Media collection - Current Schema
-{
-  _id: ObjectId,
-  url: String,                    // Original URL
-  normalizedUrl: String,          // Cleaned/normalized URL
-  platform: String,              // 'youtube', 'generic', etc.
-  title: String,                  // Extracted or provided title
-  description: String,            // Media description
-  thumbnail: String,              // Thumbnail image URL
-  metadata: {
-    duration: Number,             // Duration in seconds
-    author: String,               // Content creator
-    publishedAt: Date,            // When content was published
-    tags: [String],               // Content tags/categories
-    viewCount: Number,            // View count if available
-    // Platform-specific metadata
-    youtubeId: String,            // For YouTube videos
-    channelId: String,            // YouTube channel ID
-    // Generic metadata
-    siteName: String,             // Website name for articles
-    favicon: String               // Site favicon URL
-  },
-  createdBy: ObjectId,            // User who added this media
-  createdAt: Date,
-  updatedAt: Date
+```prisma
+// Media model - Current Schema
+model Media {
+  id            String   @id @default(uuid())
+  url           String   // Original URL
+  normalizedUrl String   @unique // Cleaned/normalized URL
+  platform      String   // 'youtube', 'generic', etc.
+  title         String?  // Extracted or provided title
+  description   String?  // Media description
+  thumbnail     String?  // Thumbnail image URL
+  duration      Int?     // Duration in seconds
+  author        String?  // Content creator
+  publishedAt   DateTime? // When content was published
+  tags          String[] // Content tags/categories
+  viewCount     Int?     // View count if available
+  // Platform-specific metadata
+  youtubeId     String?  // For YouTube videos
+  channelId     String?  // YouTube channel ID
+  // Generic metadata
+  siteName      String?  // Website name for articles
+  favicon       String?  // Site favicon URL
+  createdBy     String   // User who added this media
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([normalizedUrl])
+  @@index([platform])
+  @@index([createdBy])
 }
 ```
 
-#### Sharing Service - MongoDB ✅ IMPLEMENTED
+#### Sharing Service - PostgreSQL ✅ IMPLEMENTED
 
-```javascript
-// Shares collection - Planned Schema
-{
-  _id: ObjectId,
-  mediaId: ObjectId,              // Reference to media service
-  fromUserId: ObjectId,           // User sharing the media
-  toUserId: ObjectId,             // User receiving the share
-  message: String,                // Optional message with share
-  status: String,                 // 'pending', 'watched', 'archived'
-  watchedAt: Date,                // When marked as watched
-  watchDuration: Number,          // How long they watched (optional)
-  createdAt: Date,
-  updatedAt: Date,
+```prisma
+// Shares model
+model Share {
+  id            String    @id @default(uuid())
+  mediaId       String    // Reference to media service
+  fromUserId    String    // User sharing the media
+  toUserId      String    // User receiving the share
+  message       String?   // Optional message with share
+  status        String    // 'pending', 'watched', 'archived'
+  watchedAt     DateTime? // When marked as watched
+  watchDuration Int?      // How long they watched (optional)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  // Indexes needed:
-  // - { fromUserId: 1, createdAt: -1 }  # Get sent shares
-  // - { toUserId: 1, status: 1, createdAt: -1 }  # Get received shares
-  // - { mediaId: 1 }  # Get shares for specific media
+  @@index([fromUserId, createdAt])
+  @@index([toUserId, status, createdAt])
+  @@index([mediaId])
 }
 ```
 
-#### Inbox Service - MongoDB 🚧 TO IMPLEMENT
+#### Inbox Service - PostgreSQL 🚧 TO IMPLEMENT
 
-```javascript
+```prisma
 // Inbox items (denormalized for performance)
-{
-  _id: ObjectId,
-  userId: ObjectId,
-  shareId: ObjectId,
-  mediaId: ObjectId,
-  media: {
-    title: String,
-    thumbnail: String,
-    platform: String,
-    url: String
-  },
-  sharedBy: {
-    userId: ObjectId,
-    displayName: String,
-    avatar: String
-  },
-  message: String,
-  status: String,
-  isRead: Boolean,
-  readAt: Date,
-  sharedAt: Date,
-  updatedAt: Date
+model InboxItem {
+  id          String   @id @default(uuid())
+  userId      String
+  shareId     String
+  mediaId     String
+  // Denormalized media data
+  mediaTitle     String?
+  mediaThumbnail String?
+  mediaPlatform  String?
+  mediaUrl       String?
+  // Denormalized sharer data
+  sharedByUserId      String
+  sharedByDisplayName String?
+  sharedByAvatar      String?
+  message    String?
+  status     String
+  isRead     Boolean  @default(false)
+  readAt     DateTime?
+  sharedAt   DateTime
+  updatedAt  DateTime @updatedAt
+
+  @@index([userId, status, sharedAt])
+  @@index([shareId])
 }
 ```
 
@@ -668,7 +668,7 @@ interface ApiResponse<T> {
 
 #### ✅ Additional Media Service Features Completed
 
-- ✅ MongoDB integration with Mongoose ODM
+- ✅ PostgreSQL integration with Prisma ORM
 - ✅ Platform detection (YouTube, generic)
 - ✅ Search and filtering APIs
 - ✅ Full CRUD operations
@@ -679,7 +679,7 @@ interface ApiResponse<T> {
 #### Core Sharing Implementation ✅ COMPLETED
 
 - ✅ Service structure and boilerplate completed
-- ✅ **DONE**: Implement MongoDB schema for shares
+- ✅ **DONE**: Implement PostgreSQL schema for shares
 - ✅ **DONE**: Create core sharing endpoints (POST, GET, PATCH, DELETE)
 - ✅ **DONE**: Add share status tracking (pending, watched, archived)
 - ✅ **DONE**: Implement statistics endpoints
