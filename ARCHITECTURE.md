@@ -183,6 +183,7 @@ GET    /api/v1/shares/stats       # Get sharing statistics ✅
   - Support both shared media and self-saved media
 
 **Design Philosophy**:
+
 - **Flexible Lists**: Users can create unlimited custom lists
 - **Default Lists**: Every user gets a default "Inbox" list for incoming shares
 - **Multi-List Support**: Same media can appear in multiple lists
@@ -623,26 +624,26 @@ model ListItem {
   userId      String    // Owner (denormalized for performance)
   shareId     String?   // Reference to share (null for direct adds)
   mediaId     String    // Reference to media service
-  
+
   // Denormalized media data for performance
   mediaTitle     String?
   mediaThumbnail String?
   mediaPlatform  String?
   mediaUrl       String?
   mediaDuration  Int?
-  
+
   // Share context (if from a share)
   sharedByUserId      String?
   sharedByDisplayName String?
   sharedByAvatar      String?
   message             String? // Share message or user's own notes
-  
+
   // Item status
   status     String   // 'pending', 'watched', 'archived'
   isRead     Boolean  @default(false) // Has user seen this item
   readAt     DateTime?
   watchedAt  DateTime?
-  
+
   // Metadata
   addedAt    DateTime @default(now()) // When added to this list
   position   Int?     // For manual ordering (optional)
