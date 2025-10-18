@@ -674,6 +674,7 @@ model ListItem {
   updatedAt  DateTime @updatedAt
 
   @@index([listId, status, addedAt])
+  @@index([listId, isRead, status])  // Optimized for unread queries
   @@index([userId, mediaId, listId])
   @@index([shareId])
   @@index([userId, isRead])
