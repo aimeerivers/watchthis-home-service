@@ -649,7 +649,10 @@ model ListItem {
   sharedByUserId      String?
   sharedByDisplayName String?
   sharedByAvatar      String?
-  message             String? // Share message or user's own notes
+  // Note: message is denormalized from Share at creation time for performance.
+  // For shared items (shareId != null), this is a snapshot; updates to Share.message
+  // are not synced. For direct adds (shareId == null), this is the user's own notes.
+  message             String?
 
   // Item status
   status     String   // 'pending', 'watched', 'archived'
