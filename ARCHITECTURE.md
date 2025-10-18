@@ -660,7 +660,6 @@ model ListItem {
   // Metadata
   addedAt    DateTime @default(now()) // When added to this list
   position   Int?     // For manual ordering (optional)
-  createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
   @@index([listId, status, addedAt])
