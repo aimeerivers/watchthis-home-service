@@ -206,7 +206,7 @@ PATCH  /api/v1/lists/:id/items/:itemId  # Update item (status, notes)
 DELETE /api/v1/lists/:id/items/:itemId  # Remove item from list
 
 # Special Views
-GET    /api/v1/lists/inbox        # Shortcut to default inbox list
+GET    /api/v1/lists/default      # Shortcut to default inbox list
 GET    /api/v1/lists/:id/unread   # Get unread items in a list
 GET    /api/v1/lists/stats        # Get statistics across all lists
 ```
