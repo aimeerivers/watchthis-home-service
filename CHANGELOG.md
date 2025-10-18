@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.2.11](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.10...v2.2.11) (2025-10-15)
+
+
+### Documentation
+
+* Improve the README for legibility and relevance ([#126](https://github.com/aimeerivers/watchthis-home-service/issues/126)) ([aeec6a8](https://github.com/aimeerivers/watchthis-home-service/commit/aeec6a805ac02d38c9e50f3e4550551fd78c8de8))
+* Remove one more reference to duration from the README ([#128](https://github.com/aimeerivers/watchthis-home-service/issues/128)) ([45a4819](https://github.com/aimeerivers/watchthis-home-service/commit/45a4819d2b4f60512b6403e7e223b4bb765bf83d))
+* Update architecture document to reference PostgreSQL and Prisma instead of MongoDB and Mongoose ([#133](https://github.com/aimeerivers/watchthis-home-service/issues/133)) ([3e17802](https://github.com/aimeerivers/watchthis-home-service/commit/3e1780203bcf5c14df0725ec60546c94cbce8a72))
+* Update architecture with the new thinking for Media Service ([#130](https://github.com/aimeerivers/watchthis-home-service/issues/130)) ([b0f4cd4](https://github.com/aimeerivers/watchthis-home-service/commit/b0f4cd4ebe1fde1a1a3f0f95f6774b8fe105ff06))
+
 ## [2.2.10](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.9...v2.2.10) (2025-10-05)
 
 
