@@ -4,7 +4,14 @@ _Share media with friends - YouTube videos, music, articles, and more_
 
 ## Vision
 
-WatchThis aims to solve the problem of sharing media content with friends by providing a dedicated platform where users can share videos, music, articles, and other media into their friends' "inboxes". When content is consumed, it gets marked as watched, creating a clean and organized way to share and track media consumption among friends.
+WatchThis aims to solve the problem of managing and sharing media content by providing a dedicated platform where users can organize media into custom lists and share content with friends. Whether saving videos for "watch later", curating collections, or sharing recommendations with friends, WatchThis provides a flexible and organized way to track and consume media.
+
+### Core Use Cases
+
+1. **Personal Media Management**: Save media to your own lists (like an enhanced "watch later" feature)
+2. **Friend Sharing**: Share media recommendations directly into friends' lists
+3. **List Organization**: Create custom lists to organize media by topic, mood, or priority
+4. **Watch Tracking**: Mark items as watched and track your media consumption
 
 ## Current State
 
@@ -57,15 +64,17 @@ WatchThis aims to solve the problem of sharing media content with friends by pro
 
 #### watchthis-sharing-service
 
-- **Purpose**: Handle the sharing logic between users
+- **Purpose**: Handle the sharing logic between users (including self-sharing)
 - **Tech Stack**: Node.js, Express, TypeScript, MongoDB, Mongoose
 - **Port**: 8372 (development), 18372 (testing)
 - **Responsibilities**:
-  - Create shares (user A shares media X with user B)
+  - Create shares (user A shares media X with user B, or with themselves)
   - Manage share status (pending, watched, archived)
   - Handle share permissions and privacy settings
   - Generate share events for other services
+  - Support "save to my list" functionality via self-sharing
 - **Status**: ✅ Phase 1 Complete! Core functionality and JWT authentication implemented
+- **Note**: ⚠️ Currently blocks self-sharing - this restriction will be removed to support "watch later" use cases
 - **Implemented Features**:
   - ✅ Service structure and boilerplate
   - ✅ Basic Express app with middleware
@@ -142,6 +151,7 @@ GET    /api/v1/media/search       # Search media repository ✅
 - ✅ Share status tracking (pending/watched/archived)
 - ✅ Statistics and analytics endpoints
 - ✅ Comprehensive test suite (31 passing tests)
+- ⚠️ Currently prevents self-sharing (to be updated for "watch later" support)
 
 **Key Endpoints** ✅ Implemented:
 
@@ -157,28 +167,46 @@ GET    /api/v1/shares/stats       # Get sharing statistics ✅
 
 **Remaining Integration**: Media service validation (for production deployment)
 
-#### watchthis-inbox-service 📋 PLANNED
+#### watchthis-list-service 📋 PLANNED
 
-- **Purpose**: Manage user's personal inbox of shared content
-- **Priority**: 🔴 Critical - Implement After Sharing Service
+- **Purpose**: Manage user's personal lists and media organization
 - **Tech Stack**: Node.js, Express, TypeScript, MongoDB
-- **Port**: TBD (suggested: 7378)
+- **Port**: TBD (suggested: 7673)
 - **Status**: 📋 Not yet started - depends on sharing service completion
 - **Responsibilities**:
-  - Aggregate shares into user-specific inboxes
-  - Track watch status and progress
-  - Provide inbox filtering and organization
-  - Handle read/unread states
-  - Generate personalized inbox views
+  - Manage user-created lists (inbox, watch later, custom collections)
+  - Track media items within lists with status and metadata
+  - Provide list filtering, sorting, and organization
+  - Handle read/unread states and watch progress
+  - Generate personalized list views
+  - Support both shared media and self-saved media
+
+**Design Philosophy**:
+- **Flexible Lists**: Users can create unlimited custom lists
+- **Default Lists**: Every user gets a default "Inbox" list for incoming shares
+- **Multi-List Support**: Same media can appear in multiple lists
+- **Unified Model**: Self-saved media and shared media use the same underlying structure
 
 **Key Endpoints**:
 
 ```
-GET    /api/v1/inbox              # Get user's inbox
-GET    /api/v1/inbox/unread       # Get unread items
-PATCH  /api/v1/inbox/:id/read     # Mark item as read
-DELETE /api/v1/inbox/:id          # Remove from inbox
-GET    /api/v1/inbox/stats        # Get inbox statistics
+# List Management
+POST   /api/v1/lists              # Create a new list
+GET    /api/v1/lists              # Get all user's lists
+GET    /api/v1/lists/:id          # Get specific list details
+PATCH  /api/v1/lists/:id          # Update list (name, description, settings)
+DELETE /api/v1/lists/:id          # Delete a list
+
+# List Items
+POST   /api/v1/lists/:id/items    # Add item to list
+GET    /api/v1/lists/:id/items    # Get items in a list (with filtering)
+PATCH  /api/v1/lists/:id/items/:itemId  # Update item (status, notes)
+DELETE /api/v1/lists/:id/items/:itemId  # Remove item from list
+
+# Special Views
+GET    /api/v1/lists/inbox        # Shortcut to default inbox list
+GET    /api/v1/lists/:id/unread   # Get unread items in a list
+GET    /api/v1/lists/stats        # Get statistics across all lists
 ```
 
 ### Enhancement Services (Phase 2)
@@ -299,17 +327,18 @@ interface UserRegisteredEvent {
 
 #### Sharing Workflow
 
-1. User shares media → `MediaSharedEvent`
-2. Inbox Service receives event → Updates recipient's inbox
-3. Notification Service receives event → Sends notification
+1. User shares media (or saves to their own list) → `MediaSharedEvent`
+2. List Service receives event → Adds to recipient's appropriate list (inbox for shares, custom list for self-saves)
+3. Notification Service receives event → Sends notification (only for shares to others)
 4. Analytics Service receives event → Records sharing activity
 
 #### Watch Workflow
 
 1. User marks as watched → `MediaWatchedEvent`
 2. Sharing Service updates share status
-3. Analytics Service records consumption
-4. Notification Service may notify sharer
+3. List Service updates list item status
+4. Analytics Service records consumption
+5. Notification Service may notify sharer (if shared by someone else)
 
 ## Authentication Architecture
 
@@ -353,10 +382,11 @@ app.get("/dashboard", ensureAuthenticated, async (req, res) => {
 
   // 3. Use JWT to call other services
   const shares = await sharingService.getShares(tokens.accessToken);
-  const inbox = await inboxService.getInbox(tokens.accessToken);
+  const lists = await listService.getLists(tokens.accessToken);
+  const inbox = await listService.getInboxList(tokens.accessToken);
 
   // 4. Render page with data
-  res.render("dashboard", { shares, inbox });
+  res.render("dashboard", { shares, lists, inbox });
 });
 ```
 
@@ -483,7 +513,7 @@ export const requireJWT = async (req: RequestWithUser, res: Response, next: Next
 - ✅ **Home Service**: Session-based web UI + JWT for API calls (session-to-JWT bridge ready)
 - ✅ **Sharing Service**: Full JWT authentication implemented
 - ✅ **Media Service**: User-based JWT authentication implemented. May need service-to-service authentication (JWT service tokens)
-- 📋 **Inbox Service**: Should implement JWT-only from start
+- 📋 **List Service**: Should implement JWT-only from start
 - 📋 **Future Services**: Should implement JWT-only from start
 
 ## Database Strategy
@@ -543,12 +573,12 @@ export const requireJWT = async (req: RequestWithUser, res: Response, next: Next
 #### Sharing Service - MongoDB ✅ IMPLEMENTED
 
 ```javascript
-// Shares collection - Planned Schema
+// Shares collection - Implemented Schema
 {
   _id: ObjectId,
   mediaId: ObjectId,              // Reference to media service
   fromUserId: ObjectId,           // User sharing the media
-  toUserId: ObjectId,             // User receiving the share
+  toUserId: ObjectId,             // User receiving the share (can be same as fromUserId)
   message: String,                // Optional message with share
   status: String,                 // 'pending', 'watched', 'archived'
   watchedAt: Date,                // When marked as watched
@@ -560,35 +590,77 @@ export const requireJWT = async (req: RequestWithUser, res: Response, next: Next
   // - { fromUserId: 1, createdAt: -1 }  # Get sent shares
   // - { toUserId: 1, status: 1, createdAt: -1 }  # Get received shares
   // - { mediaId: 1 }  # Get shares for specific media
+  // - { fromUserId: 1, toUserId: 1, mediaId: 1 }  # Prevent duplicates
 }
+
+// Note: toUserId can equal fromUserId for "save to my list" functionality
 ```
 
-#### Inbox Service - MongoDB 🚧 TO IMPLEMENT
+#### List Service - MongoDB 🚧 TO IMPLEMENT
 
 ```javascript
-// Inbox items (denormalized for performance)
+// Lists collection
 {
   _id: ObjectId,
-  userId: ObjectId,
-  shareId: ObjectId,
-  mediaId: ObjectId,
+  userId: ObjectId,               // Owner of the list
+  name: String,                   // "Inbox", "Watch Later", "Favorites", etc.
+  description: String,            // Optional description
+  isDefault: Boolean,             // True for the default inbox list
+  settings: {
+    isPrivate: Boolean,           // Future: sharing lists with others
+    sortBy: String,               // 'dateAdded', 'dateShared', 'priority'
+    sortOrder: String,            // 'asc', 'desc'
+  },
+  createdAt: Date,
+  updatedAt: Date,
+
+  // Indexes:
+  // - { userId: 1, isDefault: 1 }  # Find user's default inbox
+  // - { userId: 1, createdAt: -1 }  # Get user's lists
+}
+
+// List Items collection
+{
+  _id: ObjectId,
+  listId: ObjectId,               // Reference to lists collection
+  userId: ObjectId,               // Owner (denormalized for performance)
+  shareId: ObjectId,              // Reference to share (null for direct adds)
+  mediaId: ObjectId,              // Reference to media service
+  
+  // Denormalized media data for performance
   media: {
     title: String,
     thumbnail: String,
     platform: String,
-    url: String
+    url: String,
+    duration: Number,
   },
+  
+  // Share context (if from a share)
   sharedBy: {
     userId: ObjectId,
     displayName: String,
-    avatar: String
+    avatar: String,
   },
-  message: String,
-  status: String,
-  isRead: Boolean,
+  message: String,                // Share message or user's own notes
+  
+  // Item status
+  status: String,                 // 'pending', 'watched', 'archived'
+  isRead: Boolean,                // Has user seen this item
   readAt: Date,
-  sharedAt: Date,
-  updatedAt: Date
+  watchedAt: Date,
+  
+  // Metadata
+  addedAt: Date,                  // When added to this list
+  position: Number,               // For manual ordering (optional)
+  createdAt: Date,
+  updatedAt: Date,
+
+  // Indexes:
+  // - { listId: 1, status: 1, addedAt: -1 }  # Get items in list
+  // - { userId: 1, mediaId: 1, listId: 1 }  # Prevent duplicates in same list
+  // - { shareId: 1 }  # Find list items from a share
+  // - { userId: 1, isRead: 0 }  # Get all unread items across lists
 }
 ```
 
@@ -606,22 +678,25 @@ export const requireJWT = async (req: RequestWithUser, res: Response, next: Next
 
 ##### Phase 1: Core Dashboard
 
-- **Inbox Overview**: Show unread count and recent items
-- **Quick Share**: Simple form to share media URLs
+- **List Overview**: Show all lists with unread counts
+- **Inbox Quick View**: Recent items in default inbox list
+- **Quick Share**: Simple form to share media URLs or save to own lists
 - **Recent Activity**: Show recently shared and watched items
-- **Navigation**: Links to full inbox, sharing history, profile
+- **Navigation**: Links to full lists, sharing history, profile
 
 ##### Phase 2: Rich Interface
 
 - **Real-time Updates**: WebSocket connection for live notifications
 - **Media Previews**: Embedded thumbnails and metadata
-- **Filtering**: By platform, status, date
-- **Search**: Find specific shared content
+- **List Management**: Create, edit, and organize custom lists
+- **Filtering**: By platform, status, date, list
+- **Search**: Find specific content across all lists
 
 ##### Phase 3: Advanced Features
 
 - **Recommendations**: Suggested content based on history
-- **Social Features**: Friend activity, groups
+- **Smart Lists**: Auto-generated lists based on rules
+- **Social Features**: Friend activity, groups, collaborative lists
 - **Analytics Dashboard**: Personal usage statistics
 
 ### Mobile App Preparation
@@ -693,24 +768,27 @@ interface ApiResponse<T> {
 - ✅ Full integration with user-service JWT authentication
 - 📋 Integration with media-service (planned for production)
 
-### 📋 UPCOMING: Phase 1C - Inbox Service & Integration
+### 📋 UPCOMING: Phase 1C - List Service & Integration
 
-#### Inbox Service Development
+#### List Service Development
 
 - 📋 Set up service structure (using established JWT-only pattern)
-- 📋 Design inbox aggregation logic
+- 📋 Design list and list item schemas with flexible organization
 - 📋 Implement JWT-only authentication from start
-- 📋 Implement inbox management endpoints
-- 📋 Create denormalized views for performance
-- 📋 Add real-time inbox updates
+- 📋 Implement list management endpoints (CRUD for lists)
+- 📋 Implement list item management endpoints (add, remove, update items)
+- 📋 Create default inbox list on user registration
+- 📋 Add real-time list updates via WebSocket (optional Phase 2)
 
 #### Dashboard Enhancement & MVP Complete
 
-- 📋 Enhance home service with rich dashboard features
+- 📋 Remove self-sharing restriction from sharing service
+- 📋 Update sharing service tests to allow self-sharing
+- 📋 Enhance home service with list-aware dashboard features
 - 📋 Implement session-to-JWT conversion in home service
-- 📋 Add inbox overview and quick sharing to main dashboard
-- 📋 Integrate all services: user → sharing → inbox
-- 📋 End-to-end testing of complete sharing workflow
+- 📋 Add list overview, inbox view, and quick actions to main dashboard
+- 📋 Integrate all services: user → media → sharing → lists
+- 📋 End-to-end testing of complete workflow (sharing & self-saving)
 - 📋 MVP deployment and user testing
 
 ### Phase 2: Enhanced Experience
@@ -796,8 +874,10 @@ interface ApiResponse<T> {
 - [x] **Status tracking**: Share status management works correctly (pending/watched/archived)
 - [x] **JWT Authentication**: Full JWT authentication system implemented
 - [x] **Service Integration**: Session-to-JWT bridge ready for web-to-API integration
-- [ ] Users can successfully share YouTube videos (UI integration needed)
-- [ ] Recipients can view shared content in their inbox (inbox-service needed)
+- [ ] **Self-sharing support**: Users can save media to their own lists ("watch later" functionality)
+- [ ] **List management**: Users can create and organize custom lists (list-service needed)
+- [ ] Users can successfully share YouTube videos with friends (UI integration needed)
+- [ ] Recipients can view shared content in their lists (list-service needed)
 - [ ] Email notifications are delivered (notification-service needed)
 - [ ] System handles 100+ concurrent users
 - [ ] All services maintain 99%+ uptime
