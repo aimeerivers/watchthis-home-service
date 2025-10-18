@@ -606,7 +606,7 @@ model List {
   name        String   // "Inbox", "Watch Later", "Favorites", etc.
   description String?  // Optional description
   isDefault   Boolean  @default(false) // True for the default inbox list
-  // List settings (stored as JSON)
+  // List settings
   isPrivate   Boolean  @default(true)  // Future: sharing lists with others
   sortBy      String   @default("dateAdded") // 'dateAdded', 'dateShared', 'priority'
   sortOrder   String   @default("desc") // 'asc', 'desc'
