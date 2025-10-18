@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.12](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.11...v2.2.12) (2025-10-18)
+
+
+### Documentation
+
+* Change architecture to allow self-sharing and support lists other than inbox ([#135](https://github.com/aimeerivers/watchthis-home-service/issues/135)) ([785797c](https://github.com/aimeerivers/watchthis-home-service/commit/785797cd858120b3f33a9799c8280d125377896c))
+
 ## [2.2.11](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.10...v2.2.11) (2025-10-15)
 
 
