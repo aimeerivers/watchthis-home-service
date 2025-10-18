@@ -628,6 +628,8 @@ model List {
 
   @@index([userId, isDefault])
   @@index([userId, createdAt])
+  // Note: Requires partial unique index in migration to enforce single default per user:
+  // CREATE UNIQUE INDEX list_user_default_unique ON "List" (userId) WHERE isDefault = true;
 }
 
 // List Items model
