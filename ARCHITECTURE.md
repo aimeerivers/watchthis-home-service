@@ -599,19 +599,32 @@ model Share {
 #### List Service - PostgreSQL 🚧 TO IMPLEMENT
 
 ```prisma
+// Enums for type safety
+enum ListSortBy {
+  DATE_ADDED
+  DATE_SHARED
+  PRIORITY
+  TITLE
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
 // Lists model
 model List {
-  id          String   @id @default(uuid())
-  userId      String   // Owner of the list
-  name        String   // "Inbox", "Watch Later", "Favorites", etc.
-  description String?  // Optional description
-  isDefault   Boolean  @default(false) // True for the default inbox list
+  id          String     @id @default(uuid())
+  userId      String     // Owner of the list
+  name        String     // "Inbox", "Watch Later", "Favorites", etc.
+  description String?    // Optional description
+  isDefault   Boolean    @default(false) // True for the default inbox list
   // List settings
-  isPrivate   Boolean  @default(true)  // Future: sharing lists with others
-  sortBy      String   @default("dateAdded") // 'dateAdded', 'dateShared', 'priority'
-  sortOrder   String   @default("desc") // 'asc', 'desc'
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  isPrivate   Boolean    @default(true)  // Future: sharing lists with others
+  sortBy      ListSortBy @default(DATE_ADDED)
+  sortOrder   SortOrder  @default(DESC)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
   @@index([userId, isDefault])
   @@index([userId, createdAt])
