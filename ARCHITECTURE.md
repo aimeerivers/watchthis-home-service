@@ -612,6 +612,12 @@ enum SortOrder {
   DESC
 }
 
+enum ItemStatus {
+  PENDING
+  WATCHED
+  ARCHIVED
+}
+
 // Lists model
 model List {
   id          String     @id @default(uuid())
@@ -657,8 +663,8 @@ model ListItem {
   message             String?
 
   // Item status
-  status     String   // 'pending', 'watched', 'archived'
-  isRead     Boolean  @default(false) // Has user seen this item
+  status     ItemStatus @default(PENDING)
+  isRead     Boolean    @default(false) // Has user seen this item
   readAt     DateTime?
   watchedAt  DateTime?
 
