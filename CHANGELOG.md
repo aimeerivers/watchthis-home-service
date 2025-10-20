@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.13](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.12...v2.2.13) (2025-10-20)
+
+
+### Documentation
+
+* Update architecture document to reflect that self-sharing is now possible ([#137](https://github.com/aimeerivers/watchthis-home-service/issues/137)) ([b841e1b](https://github.com/aimeerivers/watchthis-home-service/commit/b841e1b87e18b33c2032d39b3f4b31f00db066e0))
+
+
+### Chores
+
+* Update dependencies ([#139](https://github.com/aimeerivers/watchthis-home-service/issues/139)) ([8dc035e](https://github.com/aimeerivers/watchthis-home-service/commit/8dc035e2cb79d8b296485e0f194b7ebeed40c4db))
+
 ## [2.2.12](https://github.com/aimeerivers/watchthis-home-service/compare/v2.2.11...v2.2.12) (2025-10-18)
 
 
